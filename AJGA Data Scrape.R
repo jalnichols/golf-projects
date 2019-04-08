@@ -113,6 +113,7 @@ list_tourns[[y]] <- all
 tourns0411 <- bind_rows(list_tourns)
 
 #
+tictoc::tic()
 
 list_leaderboards <- vector("list", 700)
 
@@ -148,7 +149,11 @@ for(t in 1:length(tourns0411$tourn_id)) {
   
 }
 
-x2004 <- bind_rows(list_leaderboards) %>%
+tictoc::toc()
+
+# 2010 and 2011 don't work using this code
+
+players <- bind_rows(list_leaderboards) %>%
   
   mutate(value = str_replace(value, "&UID=", "xxx")) %>%
   mutate(value = str_replace(value, "&MID=", "xxx")) %>%
@@ -156,7 +161,7 @@ x2004 <- bind_rows(list_leaderboards) %>%
   
   separate(value, c("drop", "player_id", "drop2"), sep = "xxx")
 
-
+readr::write_csv(players, "2004_2009_players_to_scrape.csv")
 
 #
 #
